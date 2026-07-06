@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-cream-100 text-charcoal font-sans overflow-x-hidden;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-charcoal text-cream-100 px-6 py-3.5 rounded-xl font-medium tracking-wide transition-all duration-300 hover:bg-gold hover:text-charcoal-950 hover:shadow-luxury flex items-center justify-center gap-2 active:scale-95;
+  }
+  
+  .btn-secondary {
+    @apply bg-cream-200 border border-cream-400 text-charcoal px-6 py-3.5 rounded-xl font-medium tracking-wide transition-all duration-300 hover:border-gold hover:bg-cream-300 flex items-center justify-center gap-2 active:scale-95;
+  }
+
+  .btn-gold {
+    @apply bg-gold text-charcoal-950 px-6 py-3.5 rounded-xl font-semibold tracking-wide transition-all duration-300 hover:bg-gold-400 hover:shadow-luxury flex items-center justify-center gap-2 active:scale-95;
+  }
+}
+
+/* Custom smooth scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAF6F0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D8BC98;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C8A951;
+}
