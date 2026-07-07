@@ -34,10 +34,6 @@ export default function UploadedShowcase({ products: customProducts }) {
   const currentIdx = list.length > 0 ? activeIndex % list.length : 0;
   const currentProduct = list[currentIdx] || list[0];
 
-  if (!list || list.length === 0 || !currentProduct) {
-    return null;
-  }
-
   // Auto-slide every 6 seconds unless hovered
   useEffect(() => {
     if (isHovered || list.length === 0) return;
@@ -47,6 +43,10 @@ export default function UploadedShowcase({ products: customProducts }) {
     }, 6000);
     return () => clearInterval(interval);
   }, [isHovered, list.length]);
+
+  if (!list || list.length === 0 || !currentProduct) {
+    return null;
+  }
 
   const handleSelectProduct = (index) => {
     setActiveIndex(index);

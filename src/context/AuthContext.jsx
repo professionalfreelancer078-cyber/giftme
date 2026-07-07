@@ -48,7 +48,7 @@ export function AuthProvider({ children }) {
           localStorage.setItem('giftme_mock_admin_session', JSON.stringify(mockUser));
           return { user: mockUser };
         }
-        throw new Error('Invalid login credentials. To create this admin in Supabase, go to Authentication -> Add User.');
+        throw new Error('Invalid login credentials.');
       }
       return data;
     } else {
@@ -59,7 +59,7 @@ export function AuthProvider({ children }) {
         localStorage.setItem('giftme_mock_admin_session', JSON.stringify(mockUser));
         return { user: mockUser };
       } else {
-        throw new Error('Invalid Admin credentials. For local testing, use admin@giftme.in / admin123');
+        throw new Error('Invalid login credentials.');
       }
     }
   };
