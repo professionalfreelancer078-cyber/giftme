@@ -72,7 +72,7 @@ export default function ProductDetails() {
           price: Number(p.offer_price !== undefined ? p.offer_price : (p.price || 0)),
           originalPrice: Number(p.original_price !== undefined ? p.original_price : (p.originalPrice || 0)),
           description: p.description || p.shortDescription || '',
-          images: p.images || [p.image_url || '/assets/main view of product1.jpeg', '/assets/product3.jpeg'],
+          images: p.images || [p.image_url || 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=800'],
           category: p.category || 'Luxury Key Holder',
           rating: p.rating || 4.9,
           reviewCount: p.reviewCount || 128
@@ -212,7 +212,7 @@ export default function ProductDetails() {
         <div className="lg:col-span-7 space-y-4">
           <div className="aspect-[4/3] rounded-3xl overflow-hidden bg-cream-200 border border-cream-300 shadow-luxury relative group">
             <img
-              src={product.images?.[activeImageIndex] || product.image_url || '/assets/main view of product1.jpeg'}
+              src={product.images?.[activeImageIndex] || product.image_url || 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=800'}
               alt={product.product_name}
               className="w-full h-full object-contain p-6 transition-transform duration-700 group-hover:scale-105"
             />
@@ -526,7 +526,7 @@ export default function ProductDetails() {
 
             <div className="bg-cream-200 p-4 rounded-2xl border border-cream-300 flex items-center gap-4 text-xs">
               <img
-                src={product.images?.[0] || product.image_url || '/assets/main view of product1.jpeg'}
+                src={product.images?.[0] || product.image_url || 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=800'}
                 alt={product.product_name}
                 className="w-14 h-14 object-cover rounded-xl bg-cream-100 border border-cream-300 shrink-0"
               />

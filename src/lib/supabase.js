@@ -56,8 +56,8 @@ function getBaseCatalog() {
     originalPrice: p.originalPrice || p.price * 1.3,
     offer_price: p.price,
     price: p.price,
-    image_url: p.images?.[0] || '/assets/main view of product1.jpeg',
-    images: p.images || [p.image_url || '/assets/main view of product1.jpeg'],
+    image_url: p.images?.[0] || 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=800',
+    images: p.images || [p.image_url || 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=800'],
     colors: [],
     features: p.features || [],
     badge: p.badge || null,
@@ -116,7 +116,7 @@ function normalizeProduct(p) {
   const descVal = p.description || p.shortDescription || '';
   const priceVal = Number(p.offer_price !== undefined ? p.offer_price : (p.price !== undefined ? p.price : 0));
   const origVal = Number(p.original_price !== undefined ? p.original_price : (p.originalPrice !== undefined ? p.originalPrice : priceVal * 1.3));
-  const imgUrl = p.image_url || (Array.isArray(p.images) && p.images[0]) || '/assets/main view of product1.jpeg';
+  const imgUrl = p.image_url || (Array.isArray(p.images) && p.images[0]) || 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=800';
   const imgArr = (Array.isArray(p.images) && p.images.length > 0) ? p.images : [imgUrl];
   const stockVal = p.in_stock !== false && p.in_stock !== 'false' && p.stock_status !== 'Out of Stock';
   const validId = formatToUUID(p.id || generateUUID());
@@ -360,7 +360,7 @@ export async function createReview(reviewData) {
               category: missingProd.category || 'General',
               original_price: Number(missingProd.original_price || missingProd.originalPrice || 0),
               offer_price: Number(missingProd.offer_price || missingProd.price || 0),
-              image_url: missingProd.images?.[0] || missingProd.image_url || '/assets/main view of product1.jpeg',
+              image_url: missingProd.images?.[0] || missingProd.image_url || 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=800',
               created_at: new Date().toISOString()
             };
             const { error: prodInsertErr } = await supabase.from('products').insert([prodToInsert]);

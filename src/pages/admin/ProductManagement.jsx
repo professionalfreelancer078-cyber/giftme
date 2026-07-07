@@ -239,7 +239,7 @@ export default function ProductManagement() {
                   {/* Top Image Showcase */}
                   <div className="relative aspect-square bg-cream-200 p-2 sm:p-3 border-b border-cream-300 overflow-hidden flex items-center justify-center">
                     <img
-                      src={prod.image_url || '/assets/main view of product1.jpeg'}
+                      src={prod.image_url || 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=800'}
                       alt={prod.product_name}
                       className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-md"
                     />
@@ -361,7 +361,7 @@ export default function ProductManagement() {
                           <div className="flex items-center gap-4">
                             <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-cream-200 p-1 border border-cream-300 overflow-hidden shrink-0 group-hover:border-gold transition-colors shadow-xs">
                               <img
-                                src={prod.image_url || '/assets/main view of product1.jpeg'}
+                                src={prod.image_url || 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=800'}
                                 alt={prod.product_name}
                                 className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                               />

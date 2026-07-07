@@ -32,7 +32,7 @@ export default function Shop() {
           price: Number(p.offer_price || p.price || 0),
           originalPrice: Number(p.original_price || p.originalPrice || 0),
           shortDescription: p.description || p.shortDescription || '',
-          images: p.images || [p.image_url || '/assets/main view of product1.jpeg'],
+          images: p.images || [p.image_url || 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=800'],
           category: p.category || 'General',
           created_at: p.created_at || new Date(0).toISOString()
         }));

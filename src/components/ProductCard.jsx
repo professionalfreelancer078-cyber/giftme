@@ -17,7 +17,7 @@ export default function ProductCard({ product }) {
   const originalPrice = Number(product.originalPrice !== undefined ? product.originalPrice : (product.original_price || 0));
   const name = product.name || product.product_name || 'GiftMe Signature Piece';
   const shortDescription = product.shortDescription || product.description || '';
-  const images = (product.images && product.images.length > 0) ? product.images : [product.image_url || '/assets/main view of product1.jpeg'];
+  const images = (product.images && product.images.length > 0) ? product.images : [product.image_url || 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=800'];
   const category = product.category || 'Luxury Key Holder';
   const rating = product.rating || 4.9;
   const reviewCount = product.reviewCount || 128;

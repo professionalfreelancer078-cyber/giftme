@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, ShoppingBag, Eye, Sparkles, Star, Check } from 'lucide-react';
-import { uploadedProducts } from '../data/products';
+import { uploadedProducts, products as baseCatalog } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { getProductSlug } from '../lib/slug';
 
@@ -12,7 +12,7 @@ export default function UploadedShowcase({ products: customProducts }) {
   const { addToCart } = useCart();
   const navigate = useNavigate();
 
-  const rawList = (customProducts && customProducts.length > 0) ? customProducts : uploadedProducts;
+  const rawList = (customProducts && customProducts.length > 0) ? customProducts : (uploadedProducts.length > 0 ? uploadedProducts : baseCatalog);
   const isProductInStock = (p) => p.in_stock !== false && p.stock_status !== 'Out of Stock' && p.in_stock !== 'false';
   const inStockList = rawList.filter(isProductInStock);
   const sourceList = (inStockList.length > 0 ? inStockList : rawList).slice(0, 5);
@@ -21,7 +21,7 @@ export default function UploadedShowcase({ products: customProducts }) {
   const list = sourceList.map((p) => ({
     ...p,
     name: p.name || p.product_name || 'GiftMe Product',
-    images: p.images && p.images.length > 0 ? p.images : [p.image_url || '/assets/main view of product1.jpeg'],
+    images: p.images && p.images.length > 0 ? p.images : [p.image_url || 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=800'],
     features: p.features || [],
     description: p.description || p.shortDescription || '',
     price: Number(p.offer_price || p.price || 0),
@@ -109,11 +109,7 @@ export default function UploadedShowcase({ products: customProducts }) {
               <img
                 src={currentProduct.images[subImageIndex] || currentProduct.images[0]}
                 alt={currentProduct.name}
-                className={`w-full h-full object-center transition-transform duration-700 group-hover:scale-105 ${
-                  currentProduct.id === 104 || currentProduct.id === 105 || currentProduct.images[0]?.includes('product4') || currentProduct.images[0]?.includes('product5')
-                    ? 'object-contain p-4 bg-cream-200/80'
-                    : 'object-cover'
-                }`}
+                className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
               />
 
               {/* Top Left Badge */}

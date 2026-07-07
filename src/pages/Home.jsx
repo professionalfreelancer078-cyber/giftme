@@ -31,7 +31,7 @@ export default function Home() {
             price: Number(p.offer_price || p.price || 0),
             originalPrice: Number(p.original_price || p.originalPrice || 0),
             shortDescription: p.description || p.shortDescription || '',
-            images: p.images || [p.image_url || '/assets/main view of product1.jpeg'],
+            images: p.images || [p.image_url || 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=800'],
             badge: p.badge || p.category || 'Featured',
             created_at: p.created_at || new Date(0).toISOString()
           }));
@@ -125,10 +125,7 @@ export default function Home() {
                 key={currentHeroProduct.id}
                 src={currentHeroProduct.images[0]}
                 alt={currentHeroProduct.name}
-                className={`w-full h-full object-center transition-all duration-700 animate-fade-in group-hover:scale-105 ${currentHeroProduct.id === 104 || currentHeroProduct.id === 105 || currentHeroProduct.images[0]?.includes('product4') || currentHeroProduct.images[0]?.includes('product5')
-                  ? 'object-contain p-6 bg-cream-200/90'
-                  : 'object-cover'
-                  }`}
+                className="w-full h-full object-cover object-center transition-all duration-700 animate-fade-in group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-charcoal/90 via-charcoal/20 to-transparent flex flex-col justify-end p-8 text-cream-100">
                 <div className="flex items-center justify-between mb-1">
