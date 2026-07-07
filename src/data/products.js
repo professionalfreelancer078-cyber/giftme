@@ -1,10 +1,6 @@
 export const categories = [
   "All",
-  "Leather Keychains",
-  "Wall Key Holders",
-  "Smart Organizers",
-  "Custom Engraved",
-  "Metal Key Holders"
+  "General"
 ];
 
 export const uploadedProducts = [];

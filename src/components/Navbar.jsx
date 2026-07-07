@@ -187,7 +187,7 @@ export default function Navbar() {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Try 'Leather Keychain', 'Walnut Wall Holder', 'Carbon'..."
+                  placeholder="Search gifts, keychains, accessories..."
                   className="w-full pl-11 pr-4 py-3 rounded-xl bg-cream-200 border border-cream-300 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold text-charcoal"
                   autoFocus
                 />
@@ -199,7 +199,7 @@ export default function Navbar() {
             <div className="mt-4">
               <span className="text-xs text-stone-warm uppercase tracking-wider font-semibold">Popular searches:</span>
               <div className="flex flex-wrap gap-2 mt-2">
-                {['Leather Keychains', 'Monogram Engraved', 'Wall Holder', 'Smart Organizer'].map((term) => (
+                {['Gifts', 'Personalized', 'Accessories', 'Keychains'].map((term) => (
                   <button
                     key={term}
                     onClick={() => {

@@ -1,12 +1,15 @@
 import { updateProductCategory, deleteCategoryAndReassignProducts } from './supabase';
 
 const DEFAULT_CATEGORIES = [
+  'General'
+];
+
+const OLD_PREDEFINED_CATEGORIES = [
   'Custom Engraved',
   'Leather Keychains',
   'Metal Key Holders',
   'Smart Organizers',
-  'Wall Key Holders',
-  'General'
+  'Wall Key Holders'
 ];
 
 const LS_KEY = 'giftme_categories_v1';
@@ -30,9 +33,16 @@ export function getCategories(products = []) {
 
   // Collect unique categories from products
   const productCats = (products || []).map(p => p && p.category).filter(Boolean);
+  const activeProductCats = new Set(productCats);
+
+  // Remove old demo categories from saved unless an active product is actually using them
+  const cleanedSaved = saved.filter(cat => !OLD_PREDEFINED_CATEGORIES.includes(cat) || activeProductCats.has(cat));
+  if (saved.length !== cleanedSaved.length) {
+    saveCategories(cleanedSaved);
+  }
 
   // Combine default, saved, and product categories, removing duplicates
-  let combined = Array.from(new Set([...DEFAULT_CATEGORIES, ...saved, ...productCats]));
+  let combined = Array.from(new Set([...DEFAULT_CATEGORIES, ...cleanedSaved, ...productCats]));
 
   // Remove any category that has been explicitly deleted by admin
   combined = combined.filter(cat => !deleted.includes(cat));

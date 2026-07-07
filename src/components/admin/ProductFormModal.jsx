@@ -23,7 +23,7 @@ export default function ProductFormModal({ isOpen, onClose, onSave, productToEdi
   const [formData, setFormData] = useState({
     product_name: '',
     description: '',
-    category: 'Custom Engraved',
+    category: 'General',
     original_price: '',
     offer_price: '',
     image_url: '',
@@ -65,7 +65,7 @@ export default function ProductFormModal({ isOpen, onClose, onSave, productToEdi
       setFormData({
         product_name: productToEdit.product_name || '',
         description: productToEdit.description || '',
-        category: productToEdit.category || (cats[0] || 'Custom Engraved'),
+        category: productToEdit.category || (cats[0] || 'General'),
         original_price: productToEdit.original_price || '',
         offer_price: productToEdit.offer_price || '',
         image_url: productToEdit.image_url || '',
@@ -80,7 +80,7 @@ export default function ProductFormModal({ isOpen, onClose, onSave, productToEdi
       setFormData({
         product_name: '',
         description: '',
-        category: cats[0] || 'Custom Engraved',
+        category: cats[0] || 'General',
         original_price: '',
         offer_price: '',
         image_url: '',
