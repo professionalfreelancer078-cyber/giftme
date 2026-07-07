@@ -31,14 +31,18 @@ export default function UploadedShowcase({ products: customProducts }) {
     category: p.category || 'Signature',
     badge: p.badge || 'New Arrival',
   }));
-  const currentIdx = activeIndex % list.length;
+  const currentIdx = list.length > 0 ? activeIndex % list.length : 0;
   const currentProduct = list[currentIdx] || list[0];
+
+  if (!list || list.length === 0 || !currentProduct) {
+    return null;
+  }
 
   // Auto-slide every 6 seconds unless hovered
   useEffect(() => {
-    if (isHovered) return;
+    if (isHovered || list.length === 0) return;
     const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % list.length);
+      setActiveIndex((prev) => list.length > 0 ? (prev + 1) % list.length : 0);
       setSubImageIndex(0);
     }, 6000);
     return () => clearInterval(interval);

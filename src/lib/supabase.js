@@ -67,6 +67,36 @@ function getBaseCatalog() {
   }));
 }
 
+// Helper to identify and ignore old developer-uploaded/predefined demo products
+function isPredefinedDeveloperProduct(item) {
+  if (!item) return false;
+  const strId = item.id ? item.id.toString() : '';
+  if (strId.startsWith('10000000-0000-0000-0000-')) return true;
+  if (/^\d+$/.test(strId) && Number(strId) < 1000) return true;
+  const name = item.product_name || item.name || '';
+  const predefinedNames = [
+    'The Monarch Heritage Leather Keychain',
+    'Vanguard Minimalist Magnetic Wall Key Holder',
+    'AeroBlade Carbon Fiber Smart Key Organizer',
+    'Artisan Monogram Engraved Brass Keychain',
+    'Eclipse Quick-Release Carabiner Key Holder',
+    'Nordic Minimalist Brass & Wood Key Dock',
+    'Sovereign Braided Leather Valet Key Ring',
+    'Chronos Rotating Personalized Key Pendant',
+    'Orbit Flip-Out Key & Tool Compact',
+    'Luxe Minimalist Geometric Brass Key Ring',
+    'Horizon Floating Brass & Marble Wall Shelf',
+    'Palazzo Suede & Brass Tag Keychain',
+    'GiftMe Signature Sovereign Night Lamp',
+    'GiftMe Heritage Artisan Key Ring',
+    'GiftMe Royal Velvet Key Fob',
+    'GiftMe Minimalist Smart Loop',
+    'GiftMe Prestige Wall Key Dock'
+  ];
+  if (predefinedNames.some(n => name.includes(n) || n.includes(name))) return true;
+  return false;
+}
+
 // Initialize fallback local storage if empty
 function getFallbackProducts() {
   const baseCatalog = getBaseCatalog();
@@ -80,7 +110,7 @@ function getFallbackProducts() {
       if (Array.isArray(parsed)) {
         adminCustomProducts = parsed.filter(item => {
           const formattedId = formatToUUID(item.id);
-          return !baseIds.has(item.id?.toString()) && !baseIds.has(formattedId);
+          return !baseIds.has(item.id?.toString()) && !baseIds.has(formattedId) && !isPredefinedDeveloperProduct(item);
         });
       }
     } catch (e) {
@@ -157,7 +187,7 @@ export async function fetchProducts() {
       if (Array.isArray(parsed)) {
         localCustomProducts = parsed.filter(item => {
           const fid = formatToUUID(item.id);
-          return !baseIds.has(item.id?.toString()) && !baseIds.has(fid);
+          return !baseIds.has(item.id?.toString()) && !baseIds.has(fid) && !isPredefinedDeveloperProduct(item);
         });
       }
     } catch (e) {
@@ -176,7 +206,7 @@ export async function fetchProducts() {
       if (!error && data) {
         supabaseProducts = data.filter(item => {
           const fid = formatToUUID(item.id);
-          return !baseIds.has(item.id?.toString()) && !baseIds.has(fid);
+          return !baseIds.has(item.id?.toString()) && !baseIds.has(fid) && !isPredefinedDeveloperProduct(item);
         });
       }
     } catch (err) {
@@ -190,6 +220,13 @@ export async function fetchProducts() {
   supabaseProducts.forEach(p => { const fid = formatToUUID(p.id); customMap.set(fid, { ...(customMap.get(fid) || {}), ...p }); });
 
   const mergedList = [...customMap.values(), ...baseCatalog];
+  if (saved) {
+    try {
+      localStorage.setItem(LS_PRODUCTS_KEY, JSON.stringify([...customMap.values()]));
+    } catch (e) {
+      console.error('Error updating clean local products:', e);
+    }
+  }
 
   // 4. Normalize every product so Shop, Home, Showcase, and Admin render perfectly
   return mergedList.map(normalizeProduct).filter(Boolean);

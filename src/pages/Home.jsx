@@ -23,20 +23,18 @@ export default function Home() {
     async function loadData() {
       try {
         const data = await fetchProducts();
-        if (data && data.length > 0) {
-          const mapped = data.map((p) => ({
-            ...p,
-            id: p.id,
-            name: p.product_name || p.name,
-            price: Number(p.offer_price || p.price || 0),
-            originalPrice: Number(p.original_price || p.originalPrice || 0),
-            shortDescription: p.description || p.shortDescription || '',
-            images: p.images || [p.image_url || 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=800'],
-            badge: p.badge || p.category || 'Featured',
-            created_at: p.created_at || new Date(0).toISOString()
-          }));
-          setCatalog(mapped);
-        }
+        const mapped = (data || []).map((p) => ({
+          ...p,
+          id: p.id,
+          name: p.product_name || p.name,
+          price: Number(p.offer_price || p.price || 0),
+          originalPrice: Number(p.original_price || p.originalPrice || 0),
+          shortDescription: p.description || p.shortDescription || '',
+          images: p.images || [p.image_url || 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=800'],
+          badge: p.badge || p.category || 'Featured',
+          created_at: p.created_at || new Date(0).toISOString()
+        }));
+        setCatalog(mapped);
         const revs = await fetchReviews();
         if (revs && Array.isArray(revs)) {
           setReviews(revs);
@@ -61,7 +59,18 @@ export default function Home() {
   const fallbackUploaded = uploadedProducts.filter(isProductInStock);
   const heroProducts = recentAdminProducts.length > 0 ? recentAdminProducts : (fallbackUploaded.length > 0 ? fallbackUploaded : uploadedProducts);
   const activeHeroIdx = heroProducts.length > 0 ? heroIndex % heroProducts.length : 0;
-  const currentHeroProduct = heroProducts[activeHeroIdx] || uploadedProducts[0];
+  const defaultHeroProduct = {
+    id: 'welcome-hero-1',
+    name: 'GiftMe Boutique Collection',
+    price: 1299,
+    originalPrice: 1999,
+    rating: 5.0,
+    shortDescription: 'Our collection is currently being curated. Log in as an Admin to add your first custom products!',
+    images: ['https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=800'],
+    badge: 'Welcome'
+  };
+  const currentHeroProduct = heroProducts[activeHeroIdx] || defaultHeroProduct;
+  const displayHeroList = heroProducts.length > 0 ? heroProducts : [defaultHeroProduct];
 
   const newArrivals = sortedByNewest.slice(0, 4);
 
@@ -147,7 +156,7 @@ export default function Home() {
 
             {/* Slide progress indicators */}
             <div className="absolute z-20 bottom-4 right-4 flex items-center gap-1.5 bg-charcoal/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-gold/30">
-              {heroProducts.map((_, idx) => (
+              {displayHeroList.map((_, idx) => (
                 <button
                   key={idx}
                   onClick={(e) => {
@@ -168,7 +177,7 @@ export default function Home() {
               </div>
               <div>
                 <p className="text-xs font-bold text-charcoal">{currentHeroProduct.rating || 5.0} / 5.0 Rating</p>
-                <p className="text-[10px] text-stone-warm">Product {activeHeroIdx + 1} of {heroProducts.length} &bull; Click to View</p>
+                <p className="text-[10px] text-stone-warm">Product {activeHeroIdx + 1} of {displayHeroList.length} &bull; Click to View</p>
               </div>
             </div>
           </div>
@@ -190,11 +199,17 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-          {bestSellers.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {bestSellers.length === 0 ? (
+          <div className="col-span-full text-center py-12 bg-cream-200/50 rounded-2xl border border-cream-300">
+            <p className="text-stone-warm text-sm font-medium">No best-selling products yet. Check back soon or add new products via the Admin Dashboard!</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+            {bestSellers.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
       </section>
 
       {/* New Arrivals Section */}
@@ -209,11 +224,17 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-          {newArrivals.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {newArrivals.length === 0 ? (
+          <div className="col-span-full text-center py-12 bg-cream-100 rounded-2xl border border-cream-300">
+            <p className="text-stone-warm text-sm font-medium">No new arrivals yet. Log in as an Admin to upload your first custom products!</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+            {newArrivals.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Customer Reviews Section - Only show when users have submitted reviews */}
