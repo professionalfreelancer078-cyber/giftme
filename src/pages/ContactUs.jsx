@@ -88,13 +88,6 @@ export default function ContactUs() {
               </div>
             </div>
           </div>
-
-          <div className="bg-charcoal text-cream-100 p-8 rounded-3xl shadow-luxury">
-            <h4 className="font-serif font-bold text-lg text-gold mb-2">Backend Readiness Note</h4>
-            <p className="text-xs text-stone-warm leading-relaxed">
-              This contact form is wired cleanly with state handlers ready to connect directly to your upcoming **Spring Boot + Supabase** contact notification endpoint (`POST /api/v1/support/contact`).
-            </p>
-          </div>
         </div>
 
         {/* Form Column */}
