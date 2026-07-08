@@ -88,6 +88,7 @@ export default function Home() {
     <div className="space-y-24 pb-20">
       <Helmet>
         <title>GiftMe | Personalized Gifts & Unique Products Online</title>
+        <meta name="google-site-verification" content="_VQgry-Jm4sSA0_ENkZsM2MBfHu_4I75JRI60ssdvBk" />
         <meta name="description" content="Shop personalized gifts, keychains, water bottles, and unique products online at GiftMe." />
         <meta name="keywords" content="GiftMe, personalized gifts, keychains online, gift shop, custom gifts, water bottles online, unique gifts" />
         <link rel="canonical" href="https://giftmeofficial.netlify.app/" />
