@@ -123,11 +123,50 @@ function getFallbackProducts() {
   return merged;
 }
 
+function isMockOrPredefinedReview(r) {
+  if (!r) return true;
+  const nameVal = (r.customer_name || r.name || '').trim().toLowerCase();
+  const reviewVal = (r.review || r.comment || '').trim().toLowerCase();
+
+  const mockNames = [
+    'vikramaditya rao',
+    'ananya sharma',
+    'rohan kapoor',
+    'meera menon',
+    'priya nair',
+    'arjun verma',
+    'siddharth mehta',
+    'kavita reddy',
+    'suresh kumar',
+    'rahul gupta',
+    'sneha patel'
+  ];
+
+  if (mockNames.some(m => nameVal.includes(m))) return true;
+
+  const mockKeywords = [
+    'signature sovereign keychain is absolute perfection',
+    'prestige wall dock for our new apartment',
+    'hidden magnets hold heavy car keys',
+    'absolute perfection. the brass weight'
+  ];
+  if (mockKeywords.some(k => reviewVal.includes(k))) return true;
+
+  return false;
+}
+
 function getFallbackReviews() {
   const saved = localStorage.getItem(LS_REVIEWS_KEY);
   if (saved) {
     try {
-      return JSON.parse(saved);
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) {
+        const cleaned = parsed.filter(r => !isMockOrPredefinedReview(r));
+        if (cleaned.length !== parsed.length) {
+          localStorage.setItem(LS_REVIEWS_KEY, JSON.stringify(cleaned));
+        }
+        return cleaned;
+      }
     } catch (e) {
       console.error(e);
     }
@@ -240,7 +279,18 @@ export async function fetchReviews() {
         .from('reviews')
         .select('*')
         .order('created_at', { ascending: false });
-      if (!error && data) supabaseReviews = data;
+      if (!error && data) {
+        supabaseReviews = data.filter(item => {
+          if (isMockOrPredefinedReview(item)) {
+            // Asynchronously delete any predefined mock review from live Supabase DB
+            supabase.from('reviews').delete().eq('id', item.id).then(() => {
+              console.log('Cleaned mock review from Supabase:', item.id);
+            });
+            return false;
+          }
+          return true;
+        });
+      }
     } catch (err) {
       console.warn('Supabase review fetch failed:', err);
     }
@@ -249,10 +299,16 @@ export async function fetchReviews() {
   
   // Combine and deduplicate by id
   const reviewMap = new Map();
-  localReviews.forEach(r => reviewMap.set(r.id, r));
-  supabaseReviews.forEach(r => reviewMap.set(r.id, { ...(reviewMap.get(r.id) || {}), ...r }));
+  localReviews.forEach(r => {
+    if (!isMockOrPredefinedReview(r)) reviewMap.set(r.id, r);
+  });
+  supabaseReviews.forEach(r => {
+    if (!isMockOrPredefinedReview(r)) reviewMap.set(r.id, { ...(reviewMap.get(r.id) || {}), ...r });
+  });
   
-  return Array.from(reviewMap.values()).sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+  return Array.from(reviewMap.values())
+    .filter(r => !isMockOrPredefinedReview(r))
+    .sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
 }
 
 export async function createProduct(productData) {

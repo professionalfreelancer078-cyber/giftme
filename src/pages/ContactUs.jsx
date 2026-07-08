@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Mail, Phone, MapPin, MessageCircle, Send, CheckCircle2, ChevronDown, ChevronUp } from 'lucide-react';
 
 export default function ContactUs() {
@@ -19,21 +20,28 @@ export default function ContactUs() {
       answer: "Custom monogramming and diamond engraving is performed in-house at our Mumbai atelier. It adds zero delay to dispatch—all personalized orders leave our facility within 24 hours."
     },
     {
-      question: "Will the Neodymium magnets in the Wall Key Holder scratch my keys?",
-      answer: "Not at all. Our N52 Neodymium magnets are concealed behind a flush-finished layer of American walnut wood or bead-blasted aluminum, ensuring metal-on-metal scratching never occurs while maintaining strong magnetic grip."
+      question: "What leather varieties do you use?",
+      answer: "We source strictly full-grain vegetable-tanned Tuscan leather from certified tanneries in Santa Croce sull'Arno, Italy. It develops a rich, personalized patina over years of daily use."
     },
     {
-      question: "Do you accept corporate bulk gifting or wedding favor requests?",
-      answer: "Yes! We specialize in corporate gifting and bespoke packaging. We can laser engrave company logos, custom dates, or guest initials. Reach out via WhatsApp Concierge for volume tiers."
+      question: "Do you offer corporate or bulk gifting?",
+      answer: "Yes. For orders exceeding 25 units, our bespoke corporate desk provides custom logo embossing and branded presentation boxes. Contact us via WhatsApp for catalog access."
     },
     {
-      question: "What is your warranty policy on hardware?",
-      answer: "We offer a lifetime hardware guarantee on all solid brass and titanium components. If a carabiner spring or tension bolt ever fails under normal use, we replace it immediately."
+      question: "What is your return and exchange policy?",
+      answer: "Non-personalized key holders carry a 30-day return policy in original packaging. Monogrammed and engraved items are custom-crafted and therefore non-returnable unless a hardware defect exists."
     }
   ];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20 pb-20">
+      <Helmet>
+        <title>Contact Us | GiftMe — Concierge Support & Bespoke Gifting</title>
+        <meta name="description" content="Contact the GiftMe concierge team for inquiries on custom orders, corporate gifting, order tracking, and bespoke leather care." />
+        <link rel="canonical" href="https://giftmeofficial.netlify.app/contact" />
+        <meta property="og:title" content="Contact Us | GiftMe — Concierge Support & Bespoke Gifting" />
+        <meta property="og:url" content="https://giftmeofficial.netlify.app/contact" />
+      </Helmet>
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto space-y-3">
         <span className="text-xs uppercase tracking-[0.25em] font-semibold text-gold-700">Concierge Desk</span>
@@ -74,19 +82,11 @@ export default function ContactUs() {
               <div>
                 <h4 className="font-semibold text-sm text-charcoal">EMail</h4>
                 <p className="text-xs text-stone-warm mt-0.5">For press & corporate inquiries</p>
-                <span className="text-xs text-charcoal font-medium mt-1 inline-block">concierge@giftme.in</span>
+                <span className="text-xs text-charcoal font-medium mt-1 inline-block">jaipoornima3@gmail.com</span>
               </div>
             </div>
 
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl bg-charcoal text-gold flex items-center justify-center flex-shrink-0">
-                <MapPin className="w-5 h-5" />
-              </div>
-              <div>
-                <h4 className="font-semibold text-sm text-charcoal">Location</h4>
-                <p className="text-xs text-stone-warm mt-0.5">14th Road, Bandra West, Mumbai 400050</p>
-              </div>
-            </div>
+
           </div>
         </div>
 

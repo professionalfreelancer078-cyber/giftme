@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { ArrowRight, Sparkles, Shield, Award, Heart, Star, MessageCircle, CheckCircle2 } from 'lucide-react';
 import { products as localProducts, uploadedProducts } from '../data/products';
 import { fetchProducts, fetchReviews } from '../lib/supabase';
@@ -20,23 +21,26 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    let mounted = true;
     async function loadData() {
       try {
         const data = await fetchProducts();
-        const mapped = (data || []).map((p) => ({
-          ...p,
-          id: p.id,
-          name: p.product_name || p.name,
-          price: Number(p.offer_price || p.price || 0),
-          originalPrice: Number(p.original_price || p.originalPrice || 0),
-          shortDescription: p.description || p.shortDescription || '',
-          images: p.images || [p.image_url || 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=800'],
-          badge: p.badge || p.category || 'Featured',
-          created_at: p.created_at || new Date(0).toISOString()
-        }));
-        setCatalog(mapped);
+        if (mounted && data) {
+          const mapped = (data || []).map((p) => ({
+            ...p,
+            id: p.id,
+            name: p.product_name || p.name,
+            price: Number(p.offer_price || p.price || 0),
+            originalPrice: Number(p.original_price || p.originalPrice || 0),
+            shortDescription: p.description || p.shortDescription || '',
+            images: p.images || [p.image_url || 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=800'],
+            badge: p.badge || p.category || 'Featured',
+            created_at: p.created_at || new Date(0).toISOString()
+          }));
+          setCatalog(mapped);
+        }
         const revs = await fetchReviews();
-        if (revs && Array.isArray(revs)) {
+        if (mounted && revs && Array.isArray(revs)) {
           setReviews(revs);
         }
       } catch (err) {
@@ -44,6 +48,9 @@ export default function Home() {
       }
     }
     loadData();
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const sortedByNewest = [...catalog].sort((a, b) => {
@@ -79,6 +86,17 @@ export default function Home() {
 
   return (
     <div className="space-y-24 pb-20">
+      <Helmet>
+        <title>GiftMe | Personalized Gifts & Unique Products Online</title>
+        <meta name="description" content="Shop personalized gifts, keychains, water bottles, and unique products online at GiftMe." />
+        <meta name="keywords" content="GiftMe, personalized gifts, keychains online, gift shop, custom gifts, water bottles online, unique gifts" />
+        <link rel="canonical" href="https://giftmeofficial.netlify.app/" />
+        <meta property="og:title" content="GiftMe | Personalized Gifts & Unique Products Online" />
+        <meta property="og:description" content="Shop personalized gifts, keychains, water bottles, and unique products online at GiftMe." />
+        <meta property="og:image" content="https://giftmeofficial.netlify.app/assets/logo.png" />
+        <meta property="og:url" content="https://giftmeofficial.netlify.app/" />
+        <meta property="og:type" content="website" />
+      </Helmet>
       {/* Hero Section */}
       <section className="relative pt-12 pb-20 md:py-24 overflow-hidden bg-gradient-to-b from-cream-100 via-cream-200/50 to-cream-100 border-b border-cream-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">

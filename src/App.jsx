@@ -17,6 +17,7 @@ import Home from './pages/Home';
 // Lazy load secondary storefront pages for fast FCP & small chunk sizes
 const ProductDetails = lazy(() => import('./pages/ProductDetails'));
 const ContactUs = lazy(() => import('./pages/ContactUs'));
+const AboutUs = lazy(() => import('./pages/AboutUs'));
 const CartPage = lazy(() => import('./pages/CartPage'));
 const Checkout = lazy(() => import('./pages/Checkout'));
 const WishlistPage = lazy(() => import('./pages/WishlistPage'));
@@ -75,6 +76,8 @@ function App() {
                             <Route path="/" element={<Shop />} />
                             <Route path="/home" element={<Home />} />
                             <Route path="/shop" element={<Shop />} />
+                            <Route path="/products" element={<Shop />} />
+                            <Route path="/about" element={<AboutUs />} />
                             <Route path="/product/:id" element={<ProductDetails />} />
                             <Route path="/contact" element={<ContactUs />} />
                             <Route path="/cart" element={<CartPage />} />

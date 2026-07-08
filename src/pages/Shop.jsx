@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Search, Filter, SlidersHorizontal, X } from 'lucide-react';
 import { fetchProducts } from '../lib/supabase';
 import { products as localProducts } from '../data/products';
@@ -21,29 +22,36 @@ export default function Shop() {
   const categories = ['All', ...getCategories(catalog)];
 
   useEffect(() => {
-    async function loadShop() {
+    let mounted = true;
+    async function loadShopProducts() {
       setLoading(true);
       try {
         const data = await fetchProducts();
-        const mapped = (data || []).map((p) => ({
-          ...p,
-          id: p.id,
-          name: p.product_name || p.name,
-          price: Number(p.offer_price || p.price || 0),
-          originalPrice: Number(p.original_price || p.originalPrice || 0),
-          shortDescription: p.description || p.shortDescription || '',
-          images: p.images || [p.image_url || 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=800'],
-          category: p.category || 'General',
-          created_at: p.created_at || new Date(0).toISOString()
-        }));
-        setCatalog(mapped);
+        if (mounted && data) {
+          const mapped = (data || []).map((p) => ({
+            ...p,
+            id: p.id,
+            name: p.product_name || p.name,
+            price: Number(p.offer_price || p.price || 0),
+            originalPrice: Number(p.original_price || p.originalPrice || 0),
+            shortDescription: p.description || p.shortDescription || '',
+            images: p.images || [p.image_url || 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=800'],
+            category: p.category || 'General',
+            created_at: p.created_at || new Date(0).toISOString()
+          }));
+          setCatalog(mapped);
+        }
       } catch (err) {
         console.error(err);
       } finally {
-        setLoading(false);
+        if (mounted) setLoading(false);
       }
     }
-    loadShop();
+    loadShopProducts();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -74,7 +82,7 @@ export default function Shop() {
       const checkStr = (str) => str && (str.toLowerCase().includes(word) || str.toLowerCase().includes(wordSingular));
 
       return (
-        checkStr(product.name) ||
+        checkStr(product.name || product.product_name) ||
         checkStr(product.shortDescription) ||
         checkStr(product.description) ||
         checkStr(product.category) ||
@@ -88,8 +96,8 @@ export default function Shop() {
 
   // Sort products
   const sortedProducts = [...filteredProducts].sort((a, b) => {
-    if (sortBy === 'price-low') return a.price - b.price;
-    if (sortBy === 'price-high') return b.price - a.price;
+    if (sortBy === 'price-low') return (a.price || 0) - (b.price || 0);
+    if (sortBy === 'price-high') return (b.price || 0) - (a.price || 0);
     if (sortBy === 'latest') {
       const timeA = a.created_at ? new Date(a.created_at).getTime() : 0;
       const timeB = b.created_at ? new Date(b.created_at).getTime() : 0;
@@ -125,6 +133,14 @@ export default function Shop() {
 
   return (
     <div className="space-y-10 pb-16">
+      <Helmet>
+        <title>Shop Collection | GiftMe — Luxury Key Holders & Custom Keychains</title>
+        <meta name="description" content="Explore our complete collection of personalized key holders, custom engraved keychains, and modern lifestyle products at GiftMe." />
+        <link rel="canonical" href="https://giftmeofficial.netlify.app/shop" />
+        <meta property="og:title" content="Shop Collection | GiftMe — Luxury Key Holders & Custom Keychains" />
+        <meta property="og:url" content="https://giftmeofficial.netlify.app/shop" />
+      </Helmet>
+      
       {/* Signature Products Slide View (showcased at top of Shop Collection - limited to 5 newest products) */}
       <UploadedShowcase products={recentShowcaseProducts} />
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import {
   ShoppingBag,
   Star,
@@ -100,7 +101,7 @@ export default function ProductDetails() {
         }
 
         // Filter reviews for this product
-        setReviews((revList || []).filter(r => !found || r.product_id === found.id || true));
+        setReviews((revList || []).filter(r => !found || r.product_id?.toString() === found.id?.toString() || r.product_id === found.id));
       } catch (err) {
         console.error(err);
       } finally {
@@ -198,6 +199,33 @@ export default function ProductDetails() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20 font-sans">
+      <Helmet>
+        <title>{`${product.product_name || product.name} | GiftMe — Custom & Luxury Gifts`}</title>
+        <meta name="description" content={product.description ? product.description.substring(0, 160) : `Buy ${product.product_name || product.name} at GiftMe for ₹${offerPrice}. Premium personalized gift with custom engraving option.`} />
+        <link rel="canonical" href={`https://giftmeofficial.netlify.app/product/${product.id}`} />
+        <meta property="og:title" content={`${product.product_name || product.name} | GiftMe`} />
+        <meta property="og:description" content={product.description || `Buy ${product.product_name || product.name} online at GiftMe.`} />
+        <meta property="og:image" content={product.images?.[0] || product.image_url || 'https://giftmeofficial.netlify.app/assets/logo.png'} />
+        <meta property="og:url" content={`https://giftmeofficial.netlify.app/product/${product.id}`} />
+        <meta property="og:type" content="product" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org/",
+            "@type": "Product",
+            "name": product.product_name || product.name,
+            "image": product.images || [product.image_url],
+            "description": product.description || `Premium personalized ${product.product_name || product.name}`,
+            "sku": product.sku || `GIFTME-${product.id}`,
+            "offers": {
+              "@type": "Offer",
+              "url": `https://giftmeofficial.netlify.app/product/${product.id}`,
+              "priceCurrency": "INR",
+              "price": offerPrice,
+              "availability": isOutOfStock ? "https://schema.org/OutOfStock" : "https://schema.org/InStock"
+            }
+          })}
+        </script>
+      </Helmet>
       {/* Back button */}
       <button
         onClick={() => navigate(-1)}

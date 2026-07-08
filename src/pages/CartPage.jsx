@@ -1,32 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Trash2, Plus, Minus, ArrowRight, ShoppingBag, Tag, ShieldCheck, Sparkles } from 'lucide-react';
+import { Trash2, Plus, Minus, ArrowRight, ShoppingBag, ShieldCheck, Sparkles } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 export default function CartPage() {
   const { cartItems, updateQuantity, removeFromCart, cartTotal } = useCart();
   const navigate = useNavigate();
 
-  const [couponCode, setCouponCode] = useState('');
-  const [discount, setDiscount] = useState(0);
-  const [couponApplied, setCouponApplied] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-
-  const freeShippingThreshold = 1499;
-  const shippingCost = cartTotal >= freeShippingThreshold || cartTotal === 0 ? 0 : 99;
-  const finalTotal = Math.max(0, cartTotal - discount + shippingCost);
-
-  const handleApplyCoupon = (e) => {
-    e.preventDefault();
-    if (couponCode.toUpperCase() === 'GIFTME10' || couponCode.toUpperCase() === 'VIP10') {
-      const calcDiscount = Math.round(cartTotal * 0.1);
-      setDiscount(calcDiscount);
-      setCouponApplied(true);
-      setErrorMsg('');
-    } else {
-      setErrorMsg('Invalid code. Try "GIFTME10" for 10% privilege discount.');
-    }
-  };
+  const shippingCost = 0;
+  const finalTotal = cartTotal + shippingCost;
 
   if (cartItems.length === 0) {
     return (
@@ -114,53 +96,12 @@ export default function CartPage() {
           <div className="bg-cream-200/80 p-8 rounded-3xl border border-cream-300 space-y-6 shadow-luxury">
             <h3 className="font-serif text-xl font-bold text-charcoal">Order Breakdown</h3>
 
-            {/* Privilege Coupon */}
-            <form onSubmit={handleApplyCoupon} className="space-y-2">
-              <label className="block text-xs font-semibold text-charcoal flex items-center gap-1.5">
-                <Tag className="w-3.5 h-3.5 text-gold-700" /> Privilege Coupon Code
-              </label>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={couponCode}
-                  onChange={(e) => setCouponCode(e.target.value)}
-                  placeholder="Enter GIFTME10"
-                  disabled={couponApplied}
-                  className="flex-1 px-3.5 py-2.5 rounded-xl bg-cream-100 border border-cream-300 text-xs text-charcoal uppercase placeholder:normal-case focus:outline-none focus:border-gold disabled:opacity-50"
-                />
-                <button
-                  type="submit"
-                  disabled={couponApplied}
-                  className="bg-charcoal hover:bg-gold hover:text-charcoal-950 text-cream-100 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all disabled:opacity-50"
-                >
-                  Apply
-                </button>
-              </div>
-              {couponApplied && (
-                <p className="text-xs text-gold-700 font-semibold flex items-center gap-1">
-                  ✨ Privilege coupon applied successfully (-₹{discount.toLocaleString()})
-                </p>
-              )}
-              {errorMsg && <p className="text-xs text-red-600 font-medium">{errorMsg}</p>}
-            </form>
-
             <div className="space-y-3 pt-4 border-t border-cream-300 text-xs text-stone-warm">
               <div className="flex justify-between">
                 <span>Bag Subtotal</span>
                 <span className="font-semibold text-charcoal">₹{cartTotal.toLocaleString()}</span>
               </div>
-              {discount > 0 && (
-                <div className="flex justify-between text-gold-700 font-semibold">
-                  <span>Privilege Discount</span>
-                  <span>-₹{discount.toLocaleString()}</span>
-                </div>
-              )}
-              <div className="flex justify-between">
-                <span>Express Shipping</span>
-                <span className="font-semibold text-charcoal">
-                  {shippingCost === 0 ? 'Complimentary (FREE)' : `₹${shippingCost}`}
-                </span>
-              </div>
+
             </div>
 
             <div className="flex justify-between items-baseline pt-4 border-t border-cream-300">

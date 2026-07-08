@@ -1,10 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Award, ShieldCheck, Heart, Sparkles, ArrowRight } from 'lucide-react';
 
 export default function AboutUs() {
   return (
     <div className="space-y-24 py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+      <Helmet>
+        <title>About Us | GiftMe — Luxury Key Holders & Custom Craftsmanship</title>
+        <meta name="description" content="Learn about GiftMe, our artisanal craftsmanship, and our dedication to elevating everyday carry through personalized key holders and gifts." />
+        <link rel="canonical" href="https://giftmeofficial.netlify.app/about" />
+        <meta property="og:title" content="About Us | GiftMe — Luxury Key Holders & Custom Craftsmanship" />
+        <meta property="og:url" content="https://giftmeofficial.netlify.app/about" />
+      </Helmet>
       {/* Header Banner */}
       <div className="text-center max-w-3xl mx-auto space-y-4 animate-fade-in">
         <span className="text-xs uppercase tracking-[0.25em] font-semibold text-gold-700">The Story of GiftMe</span>

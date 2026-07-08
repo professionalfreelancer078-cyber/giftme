@@ -24,7 +24,7 @@ export default function Footer() {
           </div>
           <div>
             <h4 className="font-semibold text-cream-100 text-sm">Express Pan-India Delivery</h4>
-            <p className="text-xs text-stone-warm mt-0.5">Complimentary shipping over ₹1,499</p>
+            <p className="text-xs text-stone-warm mt-0.5">Complimentary shipping on all orders</p>
           </div>
         </div>
 
@@ -74,14 +74,7 @@ export default function Footer() {
           <p className="text-sm text-stone-warm leading-relaxed">
             GiftMe elevates everyday carry into a refined tactile ritual. We blend full-grain Tuscan leathers, architectural hardwood, and precision aerospace hardware to design key holders built for a lifetime.
           </p>
-          <div className="flex gap-3 pt-2">
-            <span className="px-3 py-1 bg-charcoal-800 text-[11px] rounded-full border border-charcoal-700 text-gold font-medium">
-              Spring Boot Ready
-            </span>
-            <span className="px-3 py-1 bg-charcoal-800 text-[11px] rounded-full border border-charcoal-700 text-gold font-medium">
-              Supabase Verified
-            </span>
-          </div>
+
         </div>
 
         {/* Quick Links */}

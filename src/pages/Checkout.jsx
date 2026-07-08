@@ -20,8 +20,8 @@ export default function Checkout() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderCompleted, setOrderCompleted] = useState(null);
 
-  const shippingCost = cartTotal >= 1499 || cartTotal === 0 ? 0 : 99;
-  const finalAmount = cartTotal + shippingCost;
+  const shippingCost = 0;
+  const finalAmount = cartTotal;
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -268,12 +268,6 @@ export default function Checkout() {
               <div className="flex justify-between">
                 <span>Items Subtotal</span>
                 <span className="font-semibold text-charcoal">₹{cartTotal.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Pan-India Express Shipping</span>
-                <span className="font-semibold text-charcoal">
-                  {shippingCost === 0 ? 'FREE' : `₹${shippingCost}`}
-                </span>
               </div>
             </div>
 
